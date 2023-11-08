@@ -1,0 +1,20 @@
+(1555, 514) = village K
+(1543, 606) = sniper Z
+(1607, 630) = alch F
+(705, 823) = play location
+
+
+center = (max_loc[0] + w//2, max_loc[1] + h//2)
+radius = 3
+cv2.circle(bloons_menu_img, center, radius, (255,255,170), 5)
+cv2.imshow("Menu", bloons_menu_img)
+cv2.waitKey()
+cv2.destroyAllWindows()
+print(center)
+
+threshold = .80
+if max_val >= threshold:
+    pyautogui.click(x=x, y=y)
+else:
+    print("Confidence value too low")
+    sys.exit()
