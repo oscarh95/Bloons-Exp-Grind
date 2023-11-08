@@ -19,6 +19,7 @@ loop_bool = True
 def on_press(key):
     global loop_bool
     if key == Key.esc:
+        print("Exito")
         loop_bool = False
         
 #Focus Bloons window   
@@ -132,24 +133,24 @@ while loop_bool:
     time.sleep(.5)
     #expert
     menuing("expert")
-    print("Expert condition cleared")
     time.sleep(.5)
+    print("Expert condition cleared")
     #infernal
     menuing("infernal")
-    print("Infernal condition cleared")
     time.sleep(.5)
+    print("Infernal condition cleared")
     #easy
     menuing("easy")
-    print("Easy condition cleared")
     time.sleep(.5)
+    print("Easy condition cleared")
     #deflation
     menuing("deflation")
-    print("Deflation condition cleared")
     time.sleep(5)
+    print("Deflation condition cleared")
     #ok
     menuing("ok")
-    print("Ok condition cleared")
     time.sleep(1)
+    print("Ok condition cleared")
 
     m_village()
     time.sleep(.5)
