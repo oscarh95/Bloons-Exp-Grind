@@ -7,6 +7,7 @@ import pygetwindow as pw
 import threading
 import time
 import sys
+import logging
 from PIL import ImageGrab
 from pynput.keyboard import Key, Listener, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
@@ -14,12 +15,15 @@ from pynput.mouse import Button, Controller as MouseController
 keyboard = KeyboardController()
 mouse = MouseController()
 
+logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
+                    format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%b-%d-%y %H:%M:%S')
+
 loop_bool = True
 
 def on_press(key):
     global loop_bool
     if key == Key.esc:
-        print("Exito")
+        logging.info("Exito")
         loop_bool = False
         
 #Focus Bloons window   
@@ -28,9 +32,9 @@ def focus_bloons_window(bloons_title):
     if hwnd:
         win32gui.SetForegroundWindow(hwnd)
         win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
-        print(f"{bloons_title} up")
+        logging.info(f"{bloons_title} up")
     else:
-        print("Failed")
+        logging.error("Focus failed")
 
 #Screenshot application
 def capture_bloons(bloons_window):
@@ -53,7 +57,7 @@ def menuing(image_name):
     match_play_template = cv2.matchTemplate(bloons_menu_img, easy_img, cv2.TM_CCOEFF_NORMED)
 
     _, max_val, _, max_loc = cv2.minMaxLoc(match_play_template)
-    #print(f'Confidence value: {max_val} \nBest location: {max_loc}')
+    #logging.info(f'Confidence value: {max_val} \nBest location: {max_loc}')
     
     cv2.rectangle(bloons_menu_img, max_loc, (max_loc[0] + w, max_loc[1] + h), (0,255,0), 2)
     center = (max_loc[0] + w//2, max_loc[1] + h//2)
@@ -64,7 +68,7 @@ def menuing(image_name):
     if max_val >= threshold:
         pyautogui.click(x=x, y=y)
     else:
-        print("Confidence value too low")
+        logging.error("Confidence value too low")
         sys.exit()
 
 #Village upgrade + placement
@@ -80,7 +84,7 @@ def m_village():
         keyboard.tap(',')
         time.sleep(.1)
         i += 1
-    print("Village up")
+    logging.info("Village up")
 
 #Sniper upgrade + placement
 def sniper():
@@ -99,7 +103,7 @@ def sniper():
         keyboard.tap('.')
         time.sleep(.1)
         i += 1
-    print("Sniper up")
+    logging.info("Sniper up")
 
 #Alchemist upgrade + placement
 def alch():
@@ -118,7 +122,7 @@ def alch():
         keyboard.tap('.')
         time.sleep(.1)
         i += 1
-    print("Alch up")
+    logging.info("Alch up")
 
 app_title = "BloonsTD6"
 focus_bloons_window(app_title)
@@ -129,28 +133,28 @@ listener_thread.start()
 while loop_bool:
     #play
     menuing("play")
-    print("Play condition cleared")
+    logging.info("Play condition cleared")
     time.sleep(.5)
     #expert
     menuing("expert")
     time.sleep(.5)
-    print("Expert condition cleared")
+    logging.info("Expert condition cleared")
     #infernal
     menuing("infernal")
     time.sleep(.5)
-    print("Infernal condition cleared")
+    logging.info("Infernal condition cleared")
     #easy
     menuing("easy")
     time.sleep(.5)
-    print("Easy condition cleared")
+    logging.info("Easy condition cleared")
     #deflation
     menuing("deflation")
     time.sleep(5)
-    print("Deflation condition cleared")
+    logging.info("Deflation condition cleared")
     #ok
     menuing("ok")
     time.sleep(1)
-    print("Ok condition cleared")
+    logging.info("Ok condition cleared")
 
     m_village()
     time.sleep(.5)
@@ -164,21 +168,21 @@ while loop_bool:
         keyboard.tap(Key.space)
         time.sleep(.1)
         i += 1
-    print("Starto")
+    logging.info("Starto")
 
     #Wait for game to end
     minutes = 5
-    print("Sleepy Time")
+    logging.info("Sleepy Time")
     time.sleep(minutes*60)
     focus_bloons_window(app_title)
-    print("Wake the fuck up samurai")
+    logging.info("Wake the fuck up samurai")
     #Next
     menuing("next")
-    print("Next condition cleared")
+    logging.info("Next condition cleared")
     time.sleep(1)
     #Home
     menuing("home")
-    print("Home condition cleared")
+    logging.info("Home condition cleared")
     time.sleep(4)
 
 listener_thread.join()
