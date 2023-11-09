@@ -16,16 +16,22 @@ keyboard = KeyboardController()
 mouse = MouseController()
 
 logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
-                    format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%b-%d-%y %H:%M:%S')
+                    format='%(asctime)s - %(levelname)s - %(message)s' - '%(module)s' - '%(lineno)d', 
+                    datefmt='%b-%d-%y %H:%M:%S')
 
 loop_bool = True
 
-def on_press(key):
-    global loop_bool
-    if key == Key.esc:
-        logging.info("Exito")
-        loop_bool = False
+#Exit while loop(WIP)
+#def on_press(key):
+    #global loop_bool
+    #if key == Key.esc:
+        #logging.info("Exito")
+        #loop_bool = False
         
+def mouse_click():
+        mouse.click(Button.left)
+        time.sleep(.5)
+        mouse.click(Button.left)
 #Focus Bloons window   
 def focus_bloons_window(bloons_title):
     hwnd = win32gui.FindWindow(None, bloons_title)
@@ -44,6 +50,7 @@ def capture_bloons(bloons_window):
     sc = sc.convert('RGBA') #save with bit depth 32
     sc.save('imgs/bloonswindow.png')
 
+#Navigating menu
 def menuing(image_name):
     capture_bloons(app_title)
 
@@ -71,64 +78,60 @@ def menuing(image_name):
         logging.error("Confidence value too low")
         sys.exit()
 
-#Village upgrade + placement
-def m_village():
-    pyautogui.moveTo(1555, 514)
-    keyboard.tap('k')
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    for i in range(2):
-        keyboard.tap(',')
-        time.sleep(.1)
-        i += 1
-    logging.info("Village up")
-
-#Sniper upgrade + placement
-def sniper():
-    pyautogui.moveTo(1543, 606)
-    keyboard.tap('z')
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    for i in range(4):
-        keyboard.tap('/')
-        time.sleep(.1)
-        i += 1
-    for i in range(2):
-        keyboard.tap('.')
-        time.sleep(.1)
-        i += 1
-    logging.info("Sniper up")
-
-#Alchemist upgrade + placement
-def alch():
-    pyautogui.moveTo(1607, 630)
-    keyboard.tap('f')
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    mouse.click(Button.left)
-    time.sleep(.5)
-    for i in range(4):
-        keyboard.tap(',')
-        time.sleep(.1)
-        i += 1
-    for i in range(2):
-        keyboard.tap('.')
-        time.sleep(.1)
-        i += 1
-    logging.info("Alch up")
+#Monkey placements
+def monkey_placement(monke):
+    #Village upgrade + placement
+    if monke == "village":
+        pyautogui.moveTo(1555, 514)
+        keyboard.tap('k')
+        time.sleep(.5)
+        mouse_click()
+        time.sleep(.5)
+        for i in range(2):
+            keyboard.tap(',')
+            time.sleep(.1)
+            i += 1
+        logging.info("Village up")
+    #Sniper upgrade + placement
+    elif monke == "sniper":
+        pyautogui.moveTo(1543, 606)
+        keyboard.tap('z')
+        time.sleep(.5)
+        mouse_click()
+        time.sleep(.5)
+        for i in range(4):
+            keyboard.tap('/')
+            time.sleep(.1)
+            i += 1
+        for i in range(2):
+            keyboard.tap('.')
+            time.sleep(.1)
+            i += 1
+        logging.info("Sniper up")
+    #Alchemist upgrade + placement
+    elif monke == "alchemist":
+        pyautogui.moveTo(1607, 630)
+        keyboard.tap('f')
+        time.sleep(.5)
+        mouse_click()
+        time.sleep(.5)
+        for i in range(4):
+            keyboard.tap(',')
+            time.sleep(.1)
+            i += 1
+        for i in range(2):
+            keyboard.tap('.')
+            time.sleep(.1)
+            i += 1
+        logging.info("Alch up")
+    else:
+        logging.error("Wrong monkey")
 
 app_title = "BloonsTD6"
 focus_bloons_window(app_title)
 
-listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
-listener_thread.start()
+#listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
+#listener_thread.start()
 
 while loop_bool:
     #play
@@ -156,11 +159,11 @@ while loop_bool:
     time.sleep(1)
     logging.info("Ok condition cleared")
 
-    m_village()
+    monkey_placement("village")
     time.sleep(.5)
-    sniper()
+    monkey_placement("sniper")
     time.sleep(.5)
-    alch()
+    monkey_placement("alchemist")
     time.sleep(.5)
     mouse.click(Button.left)
     time.sleep(.1)
@@ -185,4 +188,4 @@ while loop_bool:
     logging.info("Home condition cleared")
     time.sleep(4)
 
-listener_thread.join()
+#listener_thread.join()
