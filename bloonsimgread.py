@@ -16,17 +16,16 @@ keyboard = KeyboardController()
 mouse = MouseController()
 
 logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
-                    format='%(asctime)s - %(levelname)s - %(message)s' - '%(module)s' - '%(lineno)d', 
+                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - (message)s', 
                     datefmt='%b-%d-%y %H:%M:%S')
 
 loop_bool = True
 
 #Exit while loop(WIP)
-#def on_press(key):
-    #global loop_bool
-    #if key == Key.esc:
-        #logging.info("Exito")
-        #loop_bool = False
+def on_press(key):
+    if key == Key.esc:
+        logging.info("Exito")
+        loop_bool = False
         
 def mouse_click():
         mouse.click(Button.left)
@@ -130,8 +129,8 @@ def monkey_placement(monke):
 app_title = "BloonsTD6"
 focus_bloons_window(app_title)
 
-#listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
-#listener_thread.start()
+listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
+listener_thread.start()
 
 while loop_bool:
     #play
@@ -188,4 +187,4 @@ while loop_bool:
     logging.info("Home condition cleared")
     time.sleep(4)
 
-#listener_thread.join()
+listener_thread.join()
