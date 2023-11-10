@@ -9,7 +9,7 @@ from pynput.mouse import Button, Controller as MouseController
 keyboard = KeyboardController()
 mouse = MouseController()
 logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
-                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - (message)s', 
+                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s', 
                     datefmt='%b-%d-%y %H:%M:%S')
 #Focus Bloons window
 def focus_bloons_window(bloons_title):
