@@ -11,22 +11,25 @@ import logging
 from PIL import ImageGrab
 from pynput.keyboard import Key, Listener, Controller as KeyboardController
 from pynput.mouse import Button, Controller as MouseController
+import keyboard as kb
 
 keyboard = KeyboardController()
 mouse = MouseController()
 
 logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
+                    filemode="w",
                     format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s', 
                     datefmt='%b-%d-%y %H:%M:%S')
 
 loop_bool = True
 
 #Exit while loop(WIP)
-def on_press(key):
-    if key == Key.esc:
-        logging.info("Exito")
-        loop_bool = False
-        
+#def on_press(key):
+    #global loop_bool
+    #if key == Key.esc:
+        #logging.info("Exito")
+        #loop_bool = False
+    
 def mouse_click():
         mouse.click(Button.left)
         time.sleep(.5)
@@ -39,7 +42,7 @@ def focus_bloons_window(bloons_title):
         win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
         logging.info(f"{bloons_title} up")
     else:
-        logging.error("Focus failed")
+        logging.error(f'{bloons_title} not open/up')
 
 #Screenshot application
 def capture_bloons(bloons_window):
@@ -129,22 +132,25 @@ def monkey_placement(monke):
 app_title = "BloonsTD6"
 focus_bloons_window(app_title)
 
-listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
-listener_thread.start()
+#listener_thread = threading.Thread(target=lambda: Listener(on_press=on_press).start())
+#listener_thread.start()
 
-while loop_bool:
+while True:
     #play
     menuing("play")
     logging.info("Play condition cleared")
     time.sleep(.5)
+    print(loop_bool)
     #expert
     menuing("expert")
     time.sleep(.5)
     logging.info("Expert condition cleared")
+    print(loop_bool)
     #infernal
     menuing("infernal")
     time.sleep(.5)
     logging.info("Infernal condition cleared")
+    print(loop_bool)
     #easy
     menuing("easy")
     time.sleep(.5)
@@ -187,4 +193,4 @@ while loop_bool:
     logging.info("Home condition cleared")
     time.sleep(4)
 
-listener_thread.join()
+#listener_thread.join()
