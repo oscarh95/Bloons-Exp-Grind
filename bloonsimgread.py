@@ -16,7 +16,7 @@ keyboard = KeyboardController()
 mouse = MouseController()
 
 logging.basicConfig(filename="tracker.log", level=logging.DEBUG, 
-                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - (message)s', 
+                    format='%(asctime)s - %(levelname)s - %(module)s - %(lineno)d - %(message)s', 
                     datefmt='%b-%d-%y %H:%M:%S')
 
 loop_bool = True
